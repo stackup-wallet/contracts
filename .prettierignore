@@ -17,5 +17,5 @@ types
 .pnp.*
 coverage.json
 package-lock.json
-pnpm-lock.yaml
+yarn-lock.yaml
 yarn.lock
