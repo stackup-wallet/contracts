@@ -17,15 +17,9 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
 
-      - name: "Install yarn"
-        uses: "yarn/action-setup@v2"
-        with:
-          version: "8"
-
       - name: "Install Node.js"
         uses: "actions/setup-node@v3"
         with:
-          cache: "yarn"
           node-version: "lts/*"
 
       - name: "Install the dependencies"
