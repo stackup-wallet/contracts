@@ -39,7 +39,7 @@
     "hardhat-gas-reporter": "^1.0.9",
     "lodash": "^4.17.21",
     "mocha": "^10.1.0",
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.7",
     "prettier-plugin-solidity": "^1.1.2",
     "rimraf": "^4.1.2",
     "solhint": "^3.4.0",
