@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^8.5.0",
     "ethers": "^5.7.2",
     "fs-extra": "^10.1.0",
-    "hardhat": "^2.12.2",
+    "hardhat": "^2.13.0",
     "hardhat-deploy": "^0.11.25",
     "hardhat-gas-reporter": "^1.0.9",
     "lodash": "^4.17.21",
