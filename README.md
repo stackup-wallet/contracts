@@ -154,7 +154,7 @@ pnpm run deploy --greeting 'Bonjour, le monde!'
 
 # License
 
-Distributed under the GPL-3.0 License. See [LICENSE](./LICENSE) for more information.
+Distributed under the GPL-3.0 License. See [LICENSE](./LICENSE.md) for more information.
 
 # Contact
 
