@@ -17,22 +17,22 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
 
-      - name: "Install Pnpm"
-        uses: "pnpm/action-setup@v2"
+      - name: "Install yarn"
+        uses: "yarn/action-setup@v2"
         with:
           version: "8"
 
       - name: "Install Node.js"
         uses: "actions/setup-node@v3"
         with:
-          cache: "pnpm"
+          cache: "yarn"
           node-version: "lts/*"
 
       - name: "Install the dependencies"
-        run: "pnpm install"
+        run: "yarn install --frozen-lockfile"
 
       - name: "Lint the code"
-        run: "pnpm lint"
+        run: "yarn lint"
 
       - name: "Add lint summary"
         run: |
@@ -40,10 +40,10 @@ jobs:
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
       - name: "Compile the contracts and generate the TypeChain bindings"
-        run: "pnpm typechain"
+        run: "yarn typechain"
 
       - name: "Test the contracts and generate the coverage report"
-        run: "pnpm coverage"
+        run: "yarn coverage"
 
       - name: "Add test summary"
         run: |

@@ -77,7 +77,7 @@ cp .env.example .env
 Then, proceed with installing dependencies:
 
 ```sh
-pnpm run install
+yarn run install
 ```
 
 ## Compile
@@ -85,7 +85,7 @@ pnpm run install
 Compile the smart contracts with Hardhat:
 
 ```sh
-pnpm run compile
+yarn run compile
 ```
 
 ## TypeChain
@@ -93,7 +93,7 @@ pnpm run compile
 Compile the smart contracts and generate TypeChain bindings:
 
 ```sh
-pnpm run typechain
+yarn run typechain
 ```
 
 ## Test
@@ -101,7 +101,7 @@ pnpm run typechain
 Run the tests with Hardhat:
 
 ```sh
-pnpm run test
+yarn run test
 ```
 
 ## Lint Solidity
@@ -109,7 +109,7 @@ pnpm run test
 Lint the Solidity code:
 
 ```sh
-pnpm run lint:sol
+yarn run lint:sol
 ```
 
 ## Lint TypeScript
@@ -117,7 +117,7 @@ pnpm run lint:sol
 Lint the TypeScript code:
 
 ```sh
-pnpm run lint:ts
+yarn run lint:ts
 ```
 
 ## Coverage
@@ -125,7 +125,7 @@ pnpm run lint:ts
 Generate the code coverage report:
 
 ```sh
-pnpm run coverage
+yarn run coverage
 ```
 
 ## Report Gas
@@ -133,7 +133,7 @@ pnpm run coverage
 See the gas usage per unit test and average gas per method call:
 
 ```sh
-REPORT_GAS=true pnpm run test
+REPORT_GAS=true yarn run test
 ```
 
 ## Clean
@@ -141,7 +141,7 @@ REPORT_GAS=true pnpm run test
 Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
 
 ```sh
-pnpm run clean
+yarn run clean
 ```
 
 ## Deploy
@@ -149,7 +149,7 @@ pnpm run clean
 Deploy the contracts to Hardhat Network:
 
 ```sh
-pnpm run deploy --greeting 'Bonjour, le monde!'
+yarn run deploy --greeting 'Bonjour, le monde!'
 ```
 
 # License
