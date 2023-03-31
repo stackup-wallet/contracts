@@ -6,9 +6,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const provider = ethers.provider;
   const from = await provider.getSigner().getAddress();
 
-  await hre.deployments.deploy("Greeter", {
+  await hre.deployments.deploy("VerifyingPaymaster", {
     from,
-    args: ["Hello"],
+    args: [process.env.ENTRY_POINT_ADDRESS, from],
     log: true,
     deterministicDeployment: true,
   });

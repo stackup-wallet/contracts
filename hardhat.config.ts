@@ -11,8 +11,9 @@ const dotenvConfigPath: string = process.env.DOTENV_CONFIG_PATH || "./.env";
 dotenvConfig({ path: resolve(__dirname, dotenvConfigPath) });
 
 // Ensure that we have all the environment variables we need.
+const ep: string | undefined = process.env.ENTRY_POINT_ADDRESS;
 const mnemonic: string | undefined = process.env.MNEMONIC;
-if (!mnemonic) {
+if (!ep || !mnemonic) {
   throw new Error("Please set your MNEMONIC in a .env file");
 }
 
