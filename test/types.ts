@@ -1,12 +1,14 @@
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 
-import type { Greeter } from "../types/Greeter";
+import type { IEntryPoint } from "../types/account-abstraction/contracts/interfaces";
+import type { VerifyingPaymaster } from "../types/contracts";
 
 type Fixture<T> = () => Promise<T>;
 
 declare module "mocha" {
   export interface Context {
-    greeter: Greeter;
+    entryPoint: IEntryPoint;
+    verifyingPaymaster: VerifyingPaymaster;
     loadFixture: <T>(fixture: Fixture<T>) => Promise<T>;
     signers: Signers;
   }
