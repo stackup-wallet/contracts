@@ -2,10 +2,14 @@
   "name": "@stackup-wallet/contracts",
   "description": "Smart contracts for ERC-4337 account and paymaster implementations.",
   "version": "1.0.0",
+  "private": true,
   "author": {
     "name": "stackup-wallet",
     "url": "https://github.com/stackup-wallet"
   },
+  "workspaces": [
+    "account-abstraction"
+  ],
   "devDependencies": {
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/abstract-provider": "^5.7.0",
@@ -68,14 +72,15 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rimraf ./artifacts ./cache ./coverage ./types ./coverage.json && yarn typechain",
+    "clean": "rimraf ./artifacts ./cache ./coverage ./types ./coverage.json",
     "compile": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat compile",
     "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/**/*.ts\" && yarn typechain",
     "deploy:greeter": "RUN_ONLY=1 hardhat deploy",
     "lint": "yarn lint:sol && yarn lint:ts && yarn prettier:check",
     "lint:sol": "solhint --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --ignore-path ./.eslintignore --ext .js,.ts .",
-    "postinstall": "DOTENV_CONFIG_PATH=./.env.example yarn typechain",
+    "postinstall": "DOTENV_CONFIG_PATH=./.env.example yarn typechain && yarn postinstall:aa",
+    "postinstall:aa": "yarn workspace accountabstraction compile",
     "prettier:check": "prettier --check \"**/*.{js,json,md,sol,ts,yml}\"",
     "prettier:write": "prettier --write \"**/*.{js,json,md,sol,ts,yml}\"",
     "test": "hardhat test",
