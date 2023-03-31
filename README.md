@@ -77,7 +77,7 @@ cp .env.example .env
 Then, proceed with installing dependencies:
 
 ```sh
-yarn run install
+yarn install
 ```
 
 ## Compile
