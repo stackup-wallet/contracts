@@ -4,7 +4,11 @@ import { deployEntryPoint } from "accountabstraction/test/testutils";
 import { ethers } from "hardhat";
 
 import type { Signers } from "../types";
-import { shouldInitializeCorrectly } from "./VerifyingPaymaster.behavior";
+import {
+  shouldInitializeCorrectly,
+  shouldParsePaymasterAndDataCorrectly,
+  shouldValidatePaymasterUserOpCorrectly,
+} from "./VerifyingPaymaster.behavior";
 import { deployVerifyingPaymasterFixture } from "./VerifyingPaymaster.fixture";
 
 describe("VerifyingPaymaster", function () {
@@ -13,18 +17,27 @@ describe("VerifyingPaymaster", function () {
 
     const signers: SignerWithAddress[] = await ethers.getSigners();
     this.signers.admin = signers[0];
+    this.signers.nonAdmin = signers[1];
 
     this.loadFixture = loadFixture;
 
     this.entryPoint = await deployEntryPoint(ethers.provider);
   });
 
-  describe("Initialize", function () {
-    beforeEach(async function () {
-      const { verifyingPaymaster } = await this.loadFixture(deployVerifyingPaymasterFixture(this.entryPoint.address));
-      this.verifyingPaymaster = verifyingPaymaster;
-    });
+  beforeEach(async function () {
+    const { verifyingPaymaster } = await this.loadFixture(deployVerifyingPaymasterFixture(this.entryPoint.address));
+    this.verifyingPaymaster = verifyingPaymaster;
+  });
 
+  describe("Initialize", function () {
     shouldInitializeCorrectly();
+  });
+
+  describe("Method parsePaymasterAndData", function () {
+    shouldParsePaymasterAndDataCorrectly();
+  });
+
+  describe("Method validatePaymasterUserOp", function () {
+    shouldValidatePaymasterUserOpCorrectly();
   });
 });
