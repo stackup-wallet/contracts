@@ -5,6 +5,7 @@ import { ethers } from "hardhat";
 
 import type { Signers } from "../types";
 import {
+  shouldHandleOpsCorrectly,
   shouldInitializeCorrectly,
   shouldParsePaymasterAndDataCorrectly,
   shouldValidatePaymasterUserOpCorrectly,
@@ -39,5 +40,9 @@ describe("VerifyingPaymaster", function () {
 
   describe("Method validatePaymasterUserOp", function () {
     shouldValidatePaymasterUserOpCorrectly();
+  });
+
+  describe("Method handleOps", function () {
+    shouldHandleOpsCorrectly();
   });
 });
