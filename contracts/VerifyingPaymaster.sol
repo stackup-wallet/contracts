@@ -29,7 +29,7 @@ contract VerifyingPaymaster is BasePaymaster {
 
     uint256 private constant SIGNATURE_OFFSET = 148;
 
-    uint256 public constant POST_OP_GAS = 34586;
+    uint256 public constant POST_OP_GAS = 35000;
 
     constructor(IEntryPoint _entryPoint, address _owner) BasePaymaster(_entryPoint) {
         _transferOwnership(_owner);
@@ -112,12 +112,12 @@ contract VerifyingPaymaster is BasePaymaster {
     }
 
     function _postOp(PostOpMode mode, bytes calldata context, uint256 actualGasCost) internal override {
-        (address sender, IERC20 token, uint256 exchangeRate, uint256 gasPriceUserOp) = abi.decode(
+        (address sender, IERC20 token, uint256 exchangeRate, uint256 opGasPrice) = abi.decode(
             context,
             (address, IERC20, uint256, uint256)
         );
 
-        uint256 actualTokenCost = ((actualGasCost + (POST_OP_GAS * gasPriceUserOp)) * exchangeRate) / 1e18;
+        uint256 actualTokenCost = ((actualGasCost + (POST_OP_GAS * opGasPrice)) * exchangeRate) / 1e18;
         if (mode != PostOpMode.postOpReverted) {
             token.safeTransferFrom(sender, owner(), actualTokenCost);
         }
