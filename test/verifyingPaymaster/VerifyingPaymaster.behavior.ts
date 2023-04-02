@@ -264,6 +264,10 @@ export function shouldHandleOpsCorrectly() {
       this.entryPoint,
     );
 
+    const requiredPrefund = ethers.BigNumber.from(userOp.callGasLimit)
+      .add(ethers.BigNumber.from(userOp.verificationGasLimit).mul(3))
+      .add(userOp.preVerificationGas)
+      .mul(userOp.maxFeePerGas);
     const initBalance = await token.balanceOf(this.signers.admin.address);
     await this.entryPoint.handleOps([userOp], this.signers.admin.address);
     const postBalance = await token.balanceOf(this.signers.admin.address);
@@ -271,6 +275,9 @@ export function shouldHandleOpsCorrectly() {
     const ev = await getUserOpEvent(this.entryPoint);
     expect(ev.args.success).to.be.true;
     expect(postBalance.sub(initBalance)).to.be.greaterThan(ethers.constants.Zero);
+    expect(postBalance.sub(initBalance)).to.be.lessThanOrEqual(
+      requiredPrefund.mul(MOCK_FX).div(ethers.constants.WeiPerEther),
+    );
   });
 
   it("should revert if ERC20 token withdrawal fails", async function () {
