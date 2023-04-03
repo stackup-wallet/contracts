@@ -149,7 +149,7 @@ yarn run clean
 Deploy the contracts to Hardhat Network:
 
 ```sh
-yarn run deploy --greeting 'Bonjour, le monde!'
+yarn run deploy:VerifyingPaymaster
 ```
 
 # License
