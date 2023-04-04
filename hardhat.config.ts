@@ -39,8 +39,8 @@ const config: HardhatUserConfig = {
       polygon: process.env.POLYGONSCAN_API_KEY || "",
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
       avalanche: process.env.SNOWTRACE_API_KEY || "",
-      avalancheFuji: process.env.SNOWTRACE_API_KEY || "",
-      optimismGoerli: process.env.OPTIMISM_API_KEY || "",
+      avalancheFujiTestnet: process.env.SNOWTRACE_API_KEY || "",
+      optimisticGoerli: process.env.OPTIMISM_API_KEY || "",
     },
   },
   gasReporter: {
