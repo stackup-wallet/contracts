@@ -10,6 +10,7 @@ dist
 node_modules
 types
 account-abstraction
+deployments/**/*.json
 
 # files
 *.env
