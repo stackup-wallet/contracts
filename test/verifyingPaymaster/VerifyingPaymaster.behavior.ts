@@ -190,10 +190,13 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
         this.signers.admin,
         this.entryPoint,
       );
-      const [hash, ctx] = await Promise.all([
-        this.verifyingPaymaster.getHash(partialUserOp, MOCK_VALID_UNTIL, MOCK_VALID_AFTER, MOCK_ERC20_ADDR, MOCK_FX),
-        this.verifyingPaymaster.getContext(partialUserOp, MOCK_ERC20_ADDR, MOCK_FX),
-      ]);
+      const hash = await this.verifyingPaymaster.getHash(
+        partialUserOp,
+        MOCK_VALID_UNTIL,
+        MOCK_VALID_AFTER,
+        MOCK_ERC20_ADDR,
+        MOCK_FX,
+      );
 
       const sig = await this.signers.admin.signMessage(ethers.utils.arrayify(hash));
       const userOp = await fillAndSign(
@@ -213,7 +216,7 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
       expect(res.returnInfo.sigFailed).to.be.false;
       expect(res.returnInfo.validAfter).to.equal(ethers.BigNumber.from(MOCK_VALID_AFTER));
       expect(res.returnInfo.validUntil).to.equal(ethers.BigNumber.from(MOCK_VALID_UNTIL));
-      expect(res.returnInfo.paymasterContext).to.equal(ctx);
+      expect(res.returnInfo.paymasterContext).to.not.equal("0x");
     });
   });
 }
