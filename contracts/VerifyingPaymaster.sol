@@ -48,14 +48,6 @@ contract VerifyingPaymaster is BasePaymaster {
         }
     }
 
-    function getContext(
-        UserOperation calldata userOp,
-        address erc20Token,
-        uint256 exchangeRate
-    ) public view returns (bytes memory) {
-        return abi.encode(userOp.sender, erc20Token, exchangeRate, userOp.gasPrice());
-    }
-
     function getHash(
         UserOperation calldata userOp,
         uint48 validUntil,
@@ -101,7 +93,7 @@ contract VerifyingPaymaster is BasePaymaster {
         senderNonce[userOp.getSender()]++;
         context = "";
         if (erc20Token != address(0)) {
-            context = getContext(userOp, erc20Token, exchangeRate);
+            context = abi.encode(userOp.sender, erc20Token, exchangeRate, userOp.gasPrice());
         }
 
         if (owner() != ECDSA.recover(hash, signature)) {
