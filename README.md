@@ -7,6 +7,7 @@ Smart contracts for ERC-4337 account and paymaster implementations.
 ## Table of contents
 
 - [Repository structure](#repository-structure)
+  - [Git Clone](#git-clone)
   - [Sensible Defaults](#sensible-defaults)
   - [VSCode Integration](#vscode-integration)
   - [GitHub Actions](#github-actions)
@@ -34,6 +35,16 @@ This repository builds upon the following frameworks and libraries:
 - [Solhint](https://github.com/protofire/solhint): code linter
 - [Solcover](https://github.com/sc-forks/solidity-coverage): code coverage
 - [Prettier Plugin Solidity](https://github.com/prettier-solidity/prettier-plugin-solidity): code formatter
+
+## Git Clone
+
+The account-abstraction directory in this repository uses git submodules to include
+[eth-infinitism/account-abstraction](https://github.com/eth-infinitism/account-abstraction) as a workspace. Make sure to
+include the `--recurse-submodules` flag in your git clone command.
+
+```bash
+git clone --recurse-submodules https://github.com/eth-infinitism/account-abstraction.git
+```
 
 ## Sensible Defaults
 
