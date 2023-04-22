@@ -8,6 +8,7 @@ import { BasePaymaster } from "account-abstraction/contracts/core/BasePaymaster.
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import "account-abstraction/contracts/core/Helpers.sol" as Helpers;
 
 /**
@@ -93,7 +94,13 @@ contract VerifyingPaymaster is BasePaymaster {
         senderNonce[userOp.getSender()]++;
         context = "";
         if (erc20Token != address(0)) {
-            context = abi.encode(userOp.sender, erc20Token, exchangeRate, userOp.gasPrice());
+            context = abi.encode(
+                userOp.sender,
+                erc20Token,
+                exchangeRate,
+                userOp.maxFeePerGas,
+                userOp.maxPriorityFeePerGas
+            );
         }
 
         if (owner() != ECDSA.recover(hash, signature)) {
@@ -104,10 +111,17 @@ contract VerifyingPaymaster is BasePaymaster {
     }
 
     function _postOp(PostOpMode mode, bytes calldata context, uint256 actualGasCost) internal override {
-        (address sender, IERC20 token, uint256 exchangeRate, uint256 opGasPrice) = abi.decode(
-            context,
-            (address, IERC20, uint256, uint256)
-        );
+        (address sender, IERC20 token, uint256 exchangeRate, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) = abi
+            .decode(context, (address, IERC20, uint256, uint256, uint256));
+
+        uint256 opGasPrice;
+        unchecked {
+            if (maxFeePerGas == maxPriorityFeePerGas) {
+                opGasPrice = maxFeePerGas;
+            } else {
+                opGasPrice = Math.min(maxFeePerGas, maxPriorityFeePerGas + block.basefee);
+            }
+        }
 
         uint256 actualTokenCost = ((actualGasCost + (POST_OP_GAS * opGasPrice)) * exchangeRate) / 1e18;
         if (mode != PostOpMode.postOpReverted) {
