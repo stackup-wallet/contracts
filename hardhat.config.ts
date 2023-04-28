@@ -41,6 +41,10 @@ const config: HardhatUserConfig = {
       avalanche: process.env.SNOWTRACE_API_KEY || "",
       avalancheFujiTestnet: process.env.SNOWTRACE_API_KEY || "",
       optimisticGoerli: process.env.OPTIMISM_API_KEY || "",
+      bsc: process.env.BSCSCAN_API_KEY || "",
+      bscTestnet: process.env.BSCSCAN_API_KEY || "",
+      arbitrumOne: process.env.ARBISCAN_API_KEY || "",
+      arbitrumGoerli: process.env.ARBISCAN_API_KEY || "",
     },
   },
   gasReporter: {
@@ -62,6 +66,10 @@ const config: HardhatUserConfig = {
     avalanche: getChainConfig(process.env.AVALANCHE_RPC),
     avalancheFuji: getChainConfig(process.env.AVALANCHE_FUJI_RPC),
     optimismGoerli: getChainConfig(process.env.OPTIMISM_GOERLI_RPC),
+    bsc: getChainConfig(process.env.BSC_RPC),
+    bscTestnet: getChainConfig(process.env.BSC_TESTNET_RPC),
+    arbitrumOne: getChainConfig(process.env.ARBITRUM_ONE_RPC),
+    arbitrumGoerli: getChainConfig(process.env.ARBITRUM_GOERLI_RPC),
   },
   paths: {
     artifacts: "./artifacts",
