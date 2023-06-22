@@ -36,6 +36,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY || "",
       goerli: process.env.ETHERSCAN_API_KEY || "",
+      sepolia: process.env.ETHERSCAN_API_KEY || "",
       polygon: process.env.POLYGONSCAN_API_KEY || "",
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
       avalanche: process.env.SNOWTRACE_API_KEY || "",
@@ -62,6 +63,7 @@ const config: HardhatUserConfig = {
     },
     mainnet: getChainConfig(process.env.ETHEREUM_RPC),
     goerli: getChainConfig(process.env.GOERLI_RPC),
+    sepolia: getChainConfig(process.env.SEPOLIA_RPC),
     polygon: getChainConfig(process.env.POLYGON_RPC),
     polygonMumbai: getChainConfig(process.env.POLYGON_MUMBAI_RPC),
     avalanche: getChainConfig(process.env.AVALANCHE_RPC),
