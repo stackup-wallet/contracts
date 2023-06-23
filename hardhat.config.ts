@@ -47,6 +47,7 @@ const config: HardhatUserConfig = {
       bscTestnet: process.env.BSCSCAN_API_KEY || "",
       arbitrumOne: process.env.ARBISCAN_API_KEY || "",
       arbitrumGoerli: process.env.ARBISCAN_API_KEY || "",
+      baseGoerli: process.env.BASESCAN_API_KEY || "",
     },
   },
   gasReporter: {
@@ -74,6 +75,7 @@ const config: HardhatUserConfig = {
     bscTestnet: getChainConfig(process.env.BSC_TESTNET_RPC),
     arbitrumOne: getChainConfig(process.env.ARBITRUM_ONE_RPC),
     arbitrumGoerli: getChainConfig(process.env.ARBITRUM_GOERLI_RPC),
+    baseGoerli: getChainConfig(process.env.BASE_GOERLI_RPC),
   },
   paths: {
     artifacts: "./artifacts",
