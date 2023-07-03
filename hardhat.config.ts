@@ -49,6 +49,16 @@ const config: HardhatUserConfig = {
       arbitrumGoerli: process.env.ARBISCAN_API_KEY || "",
       baseGoerli: process.env.BASESCAN_API_KEY || "",
     },
+    customChains: [
+      {
+        network: "baseGoerli",
+        chainId: 84531,
+        urls: {
+          apiURL: "https://api-goerli.basescan.org/api",
+          browserURL: "https://goerli.basescan.org",
+        },
+      },
+    ],
   },
   gasReporter: {
     currency: "USD",
