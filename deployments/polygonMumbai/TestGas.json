@@ -1,0 +1,156 @@
+{
+  "address": "0xE057Fe015a4cf6838403213E3576B73383428500",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "offset",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "depth",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "count",
+          "type": "uint8"
+        }
+      ],
+      "name": "recursiveCall",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "store",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x6f49c83f388fca8d91fe849c4e8500104633d6b19e1a682e018f75095f55382b",
+  "receipt": {
+    "to": "0x4e59b44847b379578588920cA78FbF26c0B4956C",
+    "from": "0x8cF905C50F25A481171e7f5936625754d44A9537",
+    "contractAddress": null,
+    "transactionIndex": 4,
+    "gasUsed": "213818",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000002000000000000000000000000000000000000000000000000000800000000000000000040100000000000000000000040000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000001000000000000000000000000000000040000000004000000000000000000001000000000000000000000000000000100000000000000000000000000000000000000000000000008000000000000000000000100000",
+    "blockHash": "0x77363ab877344e0401599df6ad989ae8529e4a7f8a54bbd519b910b1774fee0a",
+    "transactionHash": "0x6f49c83f388fca8d91fe849c4e8500104633d6b19e1a682e018f75095f55382b",
+    "logs": [
+      {
+        "transactionIndex": 4,
+        "blockNumber": 38188212,
+        "transactionHash": "0x6f49c83f388fca8d91fe849c4e8500104633d6b19e1a682e018f75095f55382b",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x0000000000000000000000008cf905c50f25a481171e7f5936625754d44a9537",
+          "0x000000000000000000000000c275dc8be39f50d12f66b6a63629c39da5bae5bd"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000001e62a749ff32600000000000000000000000000000000000000000000000006ee2bd1b8b38474000000000000000000000000000000000000000000001251c4bc3386b00b67ec00000000000000000000000000000000000000000000000006ec45a74413914e000000000000000000000000000000000000000000001251c4be19b124ab5b12",
+        "logIndex": 32,
+        "blockHash": "0x77363ab877344e0401599df6ad989ae8529e4a7f8a54bbd519b910b1774fee0a"
+      }
+    ],
+    "blockNumber": 38188212,
+    "cumulativeGasUsed": "1025293",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 2,
+  "solcInputHash": "055f9d8f9269c540cc1243a6dc6e9f11",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"offset\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint8\",\"name\":\"depth\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"count\",\"type\":\"uint8\"}],\"name\":\"recursiveCall\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"store\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"A contract with a collection of methods for testing certain edge cases related to gas. This is primarily used by the bundler to verify that its UserOperation gas estimates are working.\",\"kind\":\"dev\",\"methods\":{\"recursiveCall(uint8,uint8)\":{\"details\":\"This method allows you to run a recursive call where each nested call uses more gas than its parent.\",\"params\":{\"count\":\"Specifies a countdown that decrements by 1 at each call.\",\"depth\":\"Specifies the number of recursive calls to make.\"},\"returns\":{\"_0\":\"sum Specifies the total writes made to the store.\"}}},\"title\":\"TestGas\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/test/TestGas.sol\":\"TestGas\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":800},\"remappings\":[]},\"sources\":{\"contracts/test/TestGas.sol\":{\"content\":\"// SPDX-License-Identifier: GPL-3.0\\npragma solidity ^0.8.19;\\n\\n/**\\n * @title TestGas\\n * @dev A contract with a collection of methods for testing certain edge cases related to gas.\\n * This is primarily used by the bundler to verify that its UserOperation gas estimates are working.\\n */\\ncontract TestGas {\\n    mapping(uint256 => uint256) public store;\\n    uint256 public offset;\\n\\n    /**\\n     * @dev This method allows you to run a recursive call where each nested call uses more gas than its parent.\\n     * @param depth Specifies the number of recursive calls to make.\\n     * @param count Specifies a countdown that decrements by 1 at each call.\\n     * @return sum Specifies the total writes made to the store.\\n     */\\n    function recursiveCall(uint8 depth, uint8 count) external payable returns (uint256) {\\n        uint8 sum = depth - count;\\n        for (uint8 i = 0; i <= sum; i++) {\\n            offset++;\\n            store[offset] = i + 1;\\n        }\\n\\n        // We want to maintain the current function's stack frame, so no tail-recursion here.\\n        return count == 0 ? sum : sum + this.recursiveCall(depth, count - 1);\\n    }\\n}\\n\",\"keccak256\":\"0xb4a26e2503d64d7123ba0f7815967642f9c29454228d55b6c1061da04ffc36c9\",\"license\":\"GPL-3.0\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506102e7806100206000396000f3fe6080604052600436106100345760003560e01c80636057361d146100395780638e84099e14610078578063d55565441461008b575b600080fd5b34801561004557600080fd5b506100666100543660046101cc565b60006020819052908152604090205481565b60405190815260200160405180910390f35b6100666100863660046101fb565b6100a1565b34801561009757600080fd5b5061006660015481565b6000806100ae8385610244565b905060005b8160ff168160ff161161010c57600180549060006100d08361025d565b909155506100e19050816001610276565b600154600090815260208190526040902060ff919091169055806101048161028f565b9150506100b3565b5060ff8316156101bd5730638e84099e85610128600187610244565b6040517fffffffff0000000000000000000000000000000000000000000000000000000060e085901b16815260ff9283166004820152911660248201526044016020604051808303816000875af1158015610187573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101ab91906102ae565b6101b89060ff83166102c7565b6101c2565b8060ff165b9150505b92915050565b6000602082840312156101de57600080fd5b5035919050565b803560ff811681146101f657600080fd5b919050565b6000806040838503121561020e57600080fd5b610217836101e5565b9150610225602084016101e5565b90509250929050565b634e487b7160e01b600052601160045260246000fd5b60ff82811682821603908111156101c6576101c661022e565b60006001820161026f5761026f61022e565b5060010190565b60ff81811683821601908111156101c6576101c661022e565b600060ff821660ff81036102a5576102a561022e565b60010192915050565b6000602082840312156102c057600080fd5b5051919050565b808201808211156101c6576101c661022e56fea164736f6c6343000813000a",
+  "deployedBytecode": "0x6080604052600436106100345760003560e01c80636057361d146100395780638e84099e14610078578063d55565441461008b575b600080fd5b34801561004557600080fd5b506100666100543660046101cc565b60006020819052908152604090205481565b60405190815260200160405180910390f35b6100666100863660046101fb565b6100a1565b34801561009757600080fd5b5061006660015481565b6000806100ae8385610244565b905060005b8160ff168160ff161161010c57600180549060006100d08361025d565b909155506100e19050816001610276565b600154600090815260208190526040902060ff919091169055806101048161028f565b9150506100b3565b5060ff8316156101bd5730638e84099e85610128600187610244565b6040517fffffffff0000000000000000000000000000000000000000000000000000000060e085901b16815260ff9283166004820152911660248201526044016020604051808303816000875af1158015610187573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101ab91906102ae565b6101b89060ff83166102c7565b6101c2565b8060ff165b9150505b92915050565b6000602082840312156101de57600080fd5b5035919050565b803560ff811681146101f657600080fd5b919050565b6000806040838503121561020e57600080fd5b610217836101e5565b9150610225602084016101e5565b90509250929050565b634e487b7160e01b600052601160045260246000fd5b60ff82811682821603908111156101c6576101c661022e565b60006001820161026f5761026f61022e565b5060010190565b60ff81811683821601908111156101c6576101c661022e565b600060ff821660ff81036102a5576102a561022e565b60010192915050565b6000602082840312156102c057600080fd5b5051919050565b808201808211156101c6576101c661022e56fea164736f6c6343000813000a",
+  "devdoc": {
+    "details": "A contract with a collection of methods for testing certain edge cases related to gas. This is primarily used by the bundler to verify that its UserOperation gas estimates are working.",
+    "kind": "dev",
+    "methods": {
+      "recursiveCall(uint8,uint8)": {
+        "details": "This method allows you to run a recursive call where each nested call uses more gas than its parent.",
+        "params": {
+          "count": "Specifies a countdown that decrements by 1 at each call.",
+          "depth": "Specifies the number of recursive calls to make."
+        },
+        "returns": {
+          "_0": "sum Specifies the total writes made to the store."
+        }
+      }
+    },
+    "title": "TestGas",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4309,
+        "contract": "contracts/test/TestGas.sol:TestGas",
+        "label": "store",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_uint256,t_uint256)"
+      },
+      {
+        "astId": 4311,
+        "contract": "contracts/test/TestGas.sol:TestGas",
+        "label": "offset",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_mapping(t_uint256,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
