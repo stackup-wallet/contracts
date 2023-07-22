@@ -72,6 +72,9 @@ const config: HardhatUserConfig = {
         mnemonic,
       },
     },
+    localhost: {
+      saveDeployments: false,
+    },
     mainnet: getChainConfig(process.env.ETHEREUM_RPC),
     goerli: getChainConfig(process.env.GOERLI_RPC),
     sepolia: getChainConfig(process.env.SEPOLIA_RPC),
