@@ -13,17 +13,27 @@ contract TestGas {
     /**
      * @dev This method allows you to run a recursive call where each nested call uses more gas than its parent.
      * @param depth Specifies the number of recursive calls to make.
+     * @param width Specifies the number of sibling calls at each depth to make.
      * @param count Specifies a countdown that decrements by 1 at each call.
      * @return sum Specifies the total writes made to the store.
      */
-    function recursiveCall(uint8 depth, uint8 count) external payable returns (uint256) {
-        uint8 sum = depth - count;
-        for (uint8 i = 0; i <= sum; i++) {
+    function recursiveCall(uint256 depth, uint256 width, uint256 count) external payable returns (uint256) {
+        // Gas wasting logic.
+        uint256 sum = depth - count;
+        for (uint256 i = 0; i <= sum; i++) {
             offset++;
             store[offset] = i + 1;
         }
 
-        // We want to maintain the current function's stack frame, so no tail-recursion here.
-        return count == 0 ? sum : sum + this.recursiveCall(depth, count - 1);
+        // Create multiple calls at a given depth.
+        uint256 nestedSum = 0;
+        if (count != 0) {
+            for (uint256 i = 0; i <= width; i++) {
+                nestedSum += this.recursiveCall(depth, width, count - 1);
+            }
+        }
+
+        // Maintain the function's stack frame.
+        return sum + nestedSum;
     }
 }
