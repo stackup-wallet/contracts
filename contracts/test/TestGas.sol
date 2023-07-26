@@ -29,7 +29,7 @@ contract TestGas {
         uint256 nestedSum = 0;
         if (count != 0) {
             for (uint256 i = 0; i <= width; i++) {
-                nestedSum += this.recursiveCall(depth, width, count - 1);
+                nestedSum += this.recursiveCall{ value: msg.value }(depth, width, count - 1);
             }
         }
 
