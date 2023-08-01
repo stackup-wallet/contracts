@@ -8,7 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await hre.deployments.deploy("VerifyingPaymaster", {
     from,
-    args: [process.env.ENTRY_POINT_ADDRESS, from],
+    args: [process.env.ENTRY_POINT_ADDRESS, process.env.OWNER_ADDRESS],
     log: true,
     deterministicDeployment: true,
   });
