@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.19;
 
+import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
+
 /**
  * @title TestGas
  * @dev A contract with a collection of methods for testing certain edge cases related to gas.
@@ -36,7 +38,8 @@ contract TestGas {
         if (count != 0) {
             for (uint256 i = 0; i <= width; i++) {
                 if (discount > 0) {
-                    nestedSum += this.recursiveCall{ value: msg.value, gas: gasleft() - discount }(
+                    uint256 gas = gasleft();
+                    nestedSum += this.recursiveCall{ value: msg.value, gas: gas - Math.min(discount, gas) }(
                         depth,
                         width,
                         discount,
