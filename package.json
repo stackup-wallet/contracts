@@ -78,7 +78,7 @@
     "deploy:VerifyingPaymaster": "RUN_ONLY=1 hardhat deploy",
     "deploy:6DecimalTestToken": "RUN_ONLY=2 DECIMALS=6 NAME='Stackup 6 Decimal Test Token' SYMBOL='6TEST' hardhat deploy",
     "deploy:TestGas": "RUN_ONLY=3 hardhat deploy",
-    "deploy:AllTest": "RUN_ONLY=2,3 DECIMALS=6 NAME='Stackup 6 Decimal Test Token' SYMBOL='6TEST' hardhat deploy",
+    "deploy:AllTest": "RUN_ONLY=2,3,4 DECIMALS=6 NAME='Stackup 6 Decimal Test Token' SYMBOL='6TEST' hardhat deploy",
     "verify": "hardhat verify",
     "lint": "yarn lint:sol && yarn lint:ts && yarn prettier:check",
     "lint:sol": "solhint --max-warnings 0 \"contracts/**/*.sol\"",
