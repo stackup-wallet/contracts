@@ -50,6 +50,7 @@ const config: HardhatUserConfig = {
       arbitrumSepolia: process.env.ARBISCAN_API_KEY || "",
       base: process.env.BASESCAN_API_KEY || "",
       baseGoerli: process.env.BASESCAN_API_KEY || "",
+      baseSepolia: process.env.BASESCAN_API_KEY || "",
     },
     customChains: [
       {
@@ -74,6 +75,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-goerli.basescan.org/api",
           browserURL: "https://goerli.basescan.org",
+        },
+      },
+      {
+        network: "baseSepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org",
         },
       },
     ],
@@ -109,6 +118,7 @@ const config: HardhatUserConfig = {
     arbitrumSepolia: getChainConfig(process.env.ARBITRUM_SEPOLIA_RPC),
     base: getChainConfig(process.env.BASE_RPC),
     baseGoerli: getChainConfig(process.env.BASE_GOERLI_RPC),
+    baseSepolia: getChainConfig(process.env.BASE_SEPOLIA_RPC),
   },
   paths: {
     artifacts: "./artifacts",
