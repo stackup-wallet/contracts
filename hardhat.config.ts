@@ -43,6 +43,7 @@ const config: HardhatUserConfig = {
       avalancheFujiTestnet: process.env.SNOWTRACE_API_KEY || "",
       optimisticEthereum: process.env.OPTIMISM_API_KEY || "",
       optimisticGoerli: process.env.OPTIMISM_API_KEY || "",
+      optimismSepolia: process.env.OPTIMISM_API_KEY || "",
       bsc: process.env.BSCSCAN_API_KEY || "",
       bscTestnet: process.env.BSCSCAN_API_KEY || "",
       arbitrumOne: process.env.ARBISCAN_API_KEY || "",
@@ -85,6 +86,14 @@ const config: HardhatUserConfig = {
           browserURL: "https://sepolia.basescan.org",
         },
       },
+      {
+        network: "optimismSepolia",
+        chainId: 11155420,
+        urls: {
+          apiURL: "https://api-sepolia-optimistic.etherscan.io/api",
+          browserURL: "https://sepolia-optimism.etherscan.io",
+        },
+      },
     ],
   },
   gasReporter: {
@@ -111,6 +120,7 @@ const config: HardhatUserConfig = {
     avalancheFuji: getChainConfig(process.env.AVALANCHE_FUJI_RPC),
     optimism: getChainConfig(process.env.OPTIMISM_RPC),
     optimismGoerli: getChainConfig(process.env.OPTIMISM_GOERLI_RPC),
+    optimismSepolia: getChainConfig(process.env.OPTIMISM_SEPOLIA_RPC),
     bsc: getChainConfig(process.env.BSC_RPC),
     bscTestnet: getChainConfig(process.env.BSC_TESTNET_RPC),
     arbitrumOne: getChainConfig(process.env.ARBITRUM_ONE_RPC),
