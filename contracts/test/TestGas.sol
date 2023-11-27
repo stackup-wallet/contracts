@@ -9,8 +9,19 @@ import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
  * This is primarily used by the bundler to verify that its UserOperation gas estimates are working.
  */
 contract TestGas {
-    mapping(uint256 => uint256) public store;
+    mapping(uint256 key => uint256 value) public store;
     uint256 public offset;
+
+    /**
+     * @dev This method allows you to waste gas by writting to the store a specified amount of times.
+     * @param times Specifies the total writes made to the store.
+     */
+    function wasteGas(uint256 times) public {
+        for (uint256 i = 0; i < times; i++) {
+            offset++;
+            store[offset] = i + 1;
+        }
+    }
 
     /**
      * @dev This method allows you to run a recursive call where each nested call uses more gas than its parent.

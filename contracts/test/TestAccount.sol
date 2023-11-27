@@ -23,6 +23,12 @@ contract TestAccount is IAccount, TestGas {
             (uint256 depth, uint256 width, uint256 discount) = abi.decode(userOp.callData, (uint256, uint256, uint256));
             this.recursiveCall(depth, width, discount, depth);
         }
+        if (sig == 0x0002 && userOp.callGasLimit > 0) {
+            // Force a validation OOG by causing a bad VGL estimate.
+            // VGL is estimated by setting CGL to 0. If CGL is > 0 we'll waste gas to trigger an OOG error.
+            uint256 times = abi.decode(userOp.callData, (uint256));
+            this.wasteGas(times);
+        }
 
         if (missingAccountFunds > 0) {
             (bool success, bytes memory data) = msg.sender.call{ value: missingAccountFunds }("");
