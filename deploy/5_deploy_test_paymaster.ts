@@ -17,7 +17,7 @@ func.skip = async (_: HardhatRuntimeEnvironment): Promise<boolean> => {
   const runOnly = process.env.RUN_ONLY?.split(",");
   if (!runOnly || runOnly.length === 0) return false;
 
-  return !runOnly.includes("4");
+  return !runOnly.includes("5");
 };
 
 export default func;
