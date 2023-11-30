@@ -36,27 +36,17 @@ contract VerifyingPaymaster is BasePaymaster {
     }
 
     function pack(UserOperation calldata userOp) internal pure returns (bytes memory ret) {
-        address sender = userOp.getSender();
-        uint256 nonce = userOp.nonce;
-        bytes32 hashInitCode = calldataKeccak(userOp.initCode);
-        bytes32 hashCallData = calldataKeccak(userOp.callData);
-        uint256 callGasLimit = userOp.callGasLimit;
-        uint256 verificationGasLimit = userOp.verificationGasLimit;
-        uint256 preVerificationGas = userOp.preVerificationGas;
-        uint256 maxFeePerGas = userOp.maxFeePerGas;
-        uint256 maxPriorityFeePerGas = userOp.maxPriorityFeePerGas;
-
         return
             abi.encode(
-                sender,
-                nonce,
-                hashInitCode,
-                hashCallData,
-                callGasLimit,
-                verificationGasLimit,
-                preVerificationGas,
-                maxFeePerGas,
-                maxPriorityFeePerGas
+                userOp.getSender(),
+                userOp.nonce,
+                calldataKeccak(userOp.initCode),
+                calldataKeccak(userOp.callData),
+                userOp.callGasLimit,
+                userOp.verificationGasLimit,
+                userOp.preVerificationGas,
+                userOp.maxFeePerGas,
+                userOp.maxPriorityFeePerGas
             );
     }
 
