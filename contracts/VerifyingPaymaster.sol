@@ -5,6 +5,7 @@ import { IEntryPoint } from "account-abstraction/contracts/interfaces/IEntryPoin
 import { UserOperation } from "account-abstraction/contracts/interfaces/UserOperation.sol";
 import { UserOperationLib } from "account-abstraction/contracts/interfaces/UserOperation.sol";
 import { BasePaymaster } from "account-abstraction/contracts/core/BasePaymaster.sol";
+import { calldataKeccak } from "account-abstraction/contracts/core/Helpers.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -24,8 +25,6 @@ contract VerifyingPaymaster is BasePaymaster {
     using UserOperationLib for UserOperation;
     using SafeERC20 for IERC20;
 
-    mapping(address sender => uint256 nonce) public senderNonce;
-
     uint256 private constant VALID_PND_OFFSET = 20;
 
     uint256 private constant SIGNATURE_OFFSET = 148;
@@ -37,16 +36,28 @@ contract VerifyingPaymaster is BasePaymaster {
     }
 
     function pack(UserOperation calldata userOp) internal pure returns (bytes memory ret) {
-        bytes calldata pnd = userOp.paymasterAndData;
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            let ofs := userOp
-            let len := sub(sub(pnd.offset, ofs), 32)
-            ret := mload(0x40)
-            mstore(0x40, add(ret, add(len, 32)))
-            mstore(ret, len)
-            calldatacopy(add(ret, 32), ofs, len)
-        }
+        address sender = userOp.getSender();
+        uint256 nonce = userOp.nonce;
+        bytes32 hashInitCode = calldataKeccak(userOp.initCode);
+        bytes32 hashCallData = calldataKeccak(userOp.callData);
+        uint256 callGasLimit = userOp.callGasLimit;
+        uint256 verificationGasLimit = userOp.verificationGasLimit;
+        uint256 preVerificationGas = userOp.preVerificationGas;
+        uint256 maxFeePerGas = userOp.maxFeePerGas;
+        uint256 maxPriorityFeePerGas = userOp.maxPriorityFeePerGas;
+
+        return
+            abi.encode(
+                sender,
+                nonce,
+                hashInitCode,
+                hashCallData,
+                callGasLimit,
+                verificationGasLimit,
+                preVerificationGas,
+                maxFeePerGas,
+                maxPriorityFeePerGas
+            );
     }
 
     function getHash(
@@ -58,16 +69,7 @@ contract VerifyingPaymaster is BasePaymaster {
     ) public view returns (bytes32) {
         return
             keccak256(
-                abi.encode(
-                    pack(userOp),
-                    block.chainid,
-                    address(this),
-                    senderNonce[userOp.getSender()],
-                    validUntil,
-                    validAfter,
-                    erc20Token,
-                    exchangeRate
-                )
+                abi.encode(pack(userOp), block.chainid, address(this), validUntil, validAfter, erc20Token, exchangeRate)
             );
     }
 
@@ -75,7 +77,7 @@ contract VerifyingPaymaster is BasePaymaster {
         UserOperation calldata userOp,
         bytes32 /*userOpHash*/,
         uint256 requiredPreFund
-    ) internal override returns (bytes memory context, uint256 validationData) {
+    ) internal view override returns (bytes memory context, uint256 validationData) {
         (requiredPreFund);
 
         (
@@ -91,7 +93,6 @@ contract VerifyingPaymaster is BasePaymaster {
             "VerifyingPaymaster: invalid signature length in paymasterAndData"
         );
         bytes32 hash = ECDSA.toEthSignedMessageHash(getHash(userOp, validUntil, validAfter, erc20Token, exchangeRate));
-        senderNonce[userOp.getSender()]++;
         context = "";
         if (erc20Token != address(0)) {
             context = abi.encode(
