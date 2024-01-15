@@ -22,10 +22,10 @@ function getChainConfig(jsonRpcUrl?: string): NetworkUserConfig {
     throw new Error("Please set your RPC urls in a .env file");
   }
 
-  if (process.env.DEPLOY_WITH_RPC != "") {
+  if (process.env.DEPLOY_WITH_LOCAL_RPC != "") {
     return {
       accounts: "remote",
-      url: process.env.DEPLOY_WITH_RPC,
+      url: process.env.DEPLOY_WITH_LOCAL_RPC,
     };
   }
   return {
