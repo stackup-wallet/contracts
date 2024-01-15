@@ -31,8 +31,22 @@ contract VerifyingPaymaster is BasePaymaster {
 
     uint256 public constant POST_OP_GAS = 35000;
 
+    address public verifier;
+
+    address public vault;
+
     constructor(IEntryPoint _entryPoint, address _owner) BasePaymaster(_entryPoint) {
         _transferOwnership(_owner);
+        verifier = _owner;
+        vault = _owner;
+    }
+
+    function setVerifier(address _verifier) public onlyOwner {
+        verifier = _verifier;
+    }
+
+    function setVault(address _vault) public onlyOwner {
+        vault = _vault;
     }
 
     function pack(UserOperation calldata userOp) internal pure returns (bytes memory ret) {
@@ -94,7 +108,7 @@ contract VerifyingPaymaster is BasePaymaster {
             );
         }
 
-        if (owner() != ECDSA.recover(hash, signature)) {
+        if (verifier != ECDSA.recover(hash, signature)) {
             return (context, Helpers._packValidationData(true, validUntil, validAfter));
         }
 
@@ -116,7 +130,7 @@ contract VerifyingPaymaster is BasePaymaster {
 
         uint256 actualTokenCost = ((actualGasCost + (POST_OP_GAS * opGasPrice)) * exchangeRate) / 1e18;
         if (mode != PostOpMode.postOpReverted) {
-            token.safeTransferFrom(sender, owner(), actualTokenCost);
+            token.safeTransferFrom(sender, vault, actualTokenCost);
         }
     }
 
