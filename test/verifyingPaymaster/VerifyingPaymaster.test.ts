@@ -8,6 +8,8 @@ import {
   shouldHandleOpsCorrectly,
   shouldInitializeCorrectly,
   shouldParsePaymasterAndDataCorrectly,
+  shouldSetVaultCorrectly,
+  shouldSetVerifierCorrectly,
   shouldValidatePaymasterUserOpCorrectly,
 } from "./VerifyingPaymaster.behavior";
 import { deployVerifyingPaymasterFixture } from "./VerifyingPaymaster.fixture";
@@ -19,6 +21,7 @@ describe("VerifyingPaymaster", function () {
     const signers: SignerWithAddress[] = await ethers.getSigners();
     this.signers.admin = signers[0];
     this.signers.nonAdmin = signers[1];
+    this.signers.verifier = signers[2];
 
     this.loadFixture = loadFixture;
 
@@ -32,6 +35,14 @@ describe("VerifyingPaymaster", function () {
 
   describe("Initialize", function () {
     shouldInitializeCorrectly();
+  });
+
+  describe("Method setVerifier", function () {
+    shouldSetVerifierCorrectly();
+  });
+
+  describe("Method setVault", function () {
+    shouldSetVaultCorrectly();
   });
 
   describe("Method parsePaymasterAndData", function () {

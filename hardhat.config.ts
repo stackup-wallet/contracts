@@ -1,7 +1,7 @@
 import "@nomicfoundation/hardhat-toolbox";
 import { config as dotenvConfig } from "dotenv";
 import "hardhat-deploy";
-import type { HardhatUserConfig } from "hardhat/config";
+import { type HardhatUserConfig, extendEnvironment } from "hardhat/config";
 import type { NetworkUserConfig } from "hardhat/types";
 import { resolve } from "path";
 
@@ -22,6 +22,12 @@ function getChainConfig(jsonRpcUrl?: string): NetworkUserConfig {
     throw new Error("Please set your RPC urls in a .env file");
   }
 
+  if (process.env.DEPLOY_WITH_RPC != "") {
+    return {
+      accounts: "remote",
+      url: process.env.DEPLOY_WITH_RPC,
+    };
+  }
   return {
     accounts: {
       mnemonic,

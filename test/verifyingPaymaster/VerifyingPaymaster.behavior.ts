@@ -41,6 +41,45 @@ export function shouldInitializeCorrectly(): void {
   it("should return the correct owner", async function () {
     expect(await this.verifyingPaymaster.owner()).to.equal(await ethers.provider.getSigner().getAddress());
   });
+
+  it("should initialize the verifier to equal owner", async function () {
+    expect(await this.verifyingPaymaster.verifier()).to.equal(await this.verifyingPaymaster.owner());
+  });
+
+  it("should initialize the vault to equal owner", async function () {
+    expect(await this.verifyingPaymaster.vault()).to.equal(await this.verifyingPaymaster.owner());
+  });
+}
+
+export function shouldSetVerifierCorrectly(): void {
+  it("should change the verifier address if called by owner", async function () {
+    await this.verifyingPaymaster.setVerifier(this.signers.verifier.address);
+    expect(await this.verifyingPaymaster.verifier()).to.equal(this.signers.verifier.address);
+  });
+
+  it("should revert if called by anyone else", async function () {
+    const curr = await this.verifyingPaymaster.verifier();
+    const verifier = ethers.Wallet.createRandom();
+    const unauthorizedVPM = this.verifyingPaymaster.connect(this.signers.nonAdmin);
+    await expect(unauthorizedVPM.setVerifier(verifier.address)).to.be.revertedWith("Ownable: caller is not the owner");
+    expect(await this.verifyingPaymaster.verifier()).to.equal(curr);
+  });
+}
+
+export function shouldSetVaultCorrectly(): void {
+  it("should change the vault address if called by owner", async function () {
+    const vault = ethers.Wallet.createRandom();
+    await this.verifyingPaymaster.setVault(vault.address);
+    expect(await this.verifyingPaymaster.vault()).to.equal(vault.address);
+  });
+
+  it("should revert if called by anyone else", async function () {
+    const curr = await this.verifyingPaymaster.vault();
+    const vault = ethers.Wallet.createRandom();
+    const unauthorizedVPM = this.verifyingPaymaster.connect(this.signers.nonAdmin);
+    await expect(unauthorizedVPM.setVault(vault.address)).to.be.revertedWith("Ownable: caller is not the owner");
+    expect(await this.verifyingPaymaster.vault()).to.equal(curr);
+  });
 }
 
 export function shouldParsePaymasterAndDataCorrectly(): void {
@@ -126,7 +165,7 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
       );
     });
 
-    it("should return signature error (no revert) on wrong signer signature", async function () {
+    it("should return signature error (no revert) on wrong verifier signature", async function () {
       const ret = await this.entryPoint.callStatic.simulateValidation(wrongSigUserOp).catch(simulationResultCatch);
       expect(ret.returnInfo.sigFailed).to.be.true;
     });
@@ -160,7 +199,7 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
         ethers.constants.Zero,
       );
 
-      const sig = await this.signers.admin.signMessage(ethers.utils.arrayify(hash));
+      const sig = await this.signers.verifier.signMessage(ethers.utils.arrayify(hash));
       const userOp = await fillAndSign(
         {
           ...partialUserOp,
@@ -198,7 +237,7 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
         MOCK_FX,
       );
 
-      const sig = await this.signers.admin.signMessage(ethers.utils.arrayify(hash));
+      const sig = await this.signers.verifier.signMessage(ethers.utils.arrayify(hash));
       const userOp = await fillAndSign(
         {
           ...partialUserOp,
@@ -224,11 +263,14 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
 export function shouldHandleOpsCorrectly() {
   let account: SimpleAccount;
   let token: TestToken;
+  let vault: string;
   before(async function () {
     ({ proxy: account } = await createAccount(this.signers.admin, this.signers.admin.address, this.entryPoint.address));
 
     token = await new TestToken__factory(this.signers.admin).deploy();
     await token.mint(account.address, ethers.constants.MaxUint256);
+
+    vault = await this.verifyingPaymaster.vault();
   });
 
   it("should pay with ERC20 tokens if approved", async function () {
@@ -253,7 +295,7 @@ export function shouldHandleOpsCorrectly() {
       MOCK_FX,
     );
 
-    const sig = await this.signers.admin.signMessage(ethers.utils.arrayify(hash));
+    const sig = await this.signers.verifier.signMessage(ethers.utils.arrayify(hash));
     const userOp = await fillAndSign(
       {
         ...partialUserOp,
@@ -271,9 +313,9 @@ export function shouldHandleOpsCorrectly() {
       .add(ethers.BigNumber.from(userOp.verificationGasLimit).mul(3))
       .add(userOp.preVerificationGas)
       .mul(userOp.maxFeePerGas);
-    const initBalance = await token.balanceOf(this.signers.admin.address);
+    const initBalance = await token.balanceOf(vault);
     await this.entryPoint.handleOps([userOp], this.signers.admin.address);
-    const postBalance = await token.balanceOf(this.signers.admin.address);
+    const postBalance = await token.balanceOf(vault);
 
     const ev = await getUserOpEvent(this.entryPoint);
     expect(ev.args.success).to.be.true;
@@ -305,7 +347,7 @@ export function shouldHandleOpsCorrectly() {
       MOCK_FX,
     );
 
-    const sig = await this.signers.admin.signMessage(ethers.utils.arrayify(hash));
+    const sig = await this.signers.verifier.signMessage(ethers.utils.arrayify(hash));
     const userOp = await fillAndSign(
       {
         ...partialUserOp,
@@ -319,9 +361,9 @@ export function shouldHandleOpsCorrectly() {
       this.entryPoint,
     );
 
-    const initBalance = await token.balanceOf(this.signers.admin.address);
+    const initBalance = await token.balanceOf(vault);
     await this.entryPoint.handleOps([userOp], this.signers.admin.address);
-    const postBalance = await token.balanceOf(this.signers.admin.address);
+    const postBalance = await token.balanceOf(vault);
 
     const ev = await getUserOpEvent(this.entryPoint);
     expect(ev.args.success).to.be.false;

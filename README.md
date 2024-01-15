@@ -77,9 +77,21 @@ Below are some useful commands for development.
 
 ## Pre Requisites
 
-Before being able to run any command, you need to create a `.env` file and set a BIP-39 compatible mnemonic as an
-environment variable. You can follow the example in `.env.example`. If you don't already have a mnemonic, you can use
-this [website](https://iancoleman.io/bip39/) to generate one.
+Before being able to run any command, you need to create a `.env` file and set your environment variables. You can
+follow the example in `.env.example`.
+
+### Deployment methods
+
+By default, all non test contract deployments will use the BIP-39 compatible mnemonic set in the `.env` file. If you
+don't already have a mnemonic, you can use this [website](https://iancoleman.io/bip39/) to generate one.
+
+If you do not want to use your mnemonic to deploy contracts, you can also use local providers like
+[frame](https://github.com/floating/frame) to connect this repository to an alternative signing method (e.g. hardware
+wallet). Make sure to set `DEPLOY_WITH_RPC` to the correct url in your `.env` file. **This is the preferred method for
+security.**
+
+> ℹ️ Note: If you are using `DEPLOY_WITH_RPC` make sure the local provider is configured to the correct network. If
+> using [frame](https://github.com/floating/frame), make sure the dApp's default network is set to the correct chain.
 
 ```sh
 cp .env.example .env
