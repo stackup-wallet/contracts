@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.19;
 
+/* solhint-disable avoid-low-level-calls */
+
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 
 /**
@@ -64,5 +66,20 @@ contract TestGas {
 
         // Maintain the function's stack frame.
         return sum + nestedSum;
+    }
+
+    /**
+     * @dev This method will trigger an error in the current call frame.
+     */
+    function triggerRevert() external pure {
+        revert("TestGas: revert triggered");
+    }
+
+    /**
+     * @dev This method will trigger an error in a nested call frame and stop it from bubbling up.
+     */
+    function handleRevert() external {
+        (bool success, ) = address(this).call(abi.encodeWithSignature("triggerRevert()"));
+        (success);
     }
 }
