@@ -25,5 +25,5 @@ task("verifyingPaymaster:stake:add", "Stakes the paymaster with the EntryPoint")
     const pmc = (await ethers.getContractFactory("VerifyingPaymaster", signer)).attach(pm);
     const transaction = (await pmc.addStake(UNSTAKE_DELAY, { value })) as TransactionResponse;
     const receipt = await transaction.wait();
-    console.log(`Paymaster deposit added at: ${receipt.transactionHash}`);
+    console.log(`Paymaster stake added at: ${receipt.transactionHash}`);
   });
