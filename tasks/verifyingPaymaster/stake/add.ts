@@ -1,6 +1,8 @@
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { task } from "hardhat/config";
 
+const UNSTAKE_DELAY = 86400;
+
 task("verifyingPaymaster:stake:add", "Stakes the paymaster with the EntryPoint")
   .addPositionalParam("paymaster")
   .addPositionalParam("eth")
@@ -21,7 +23,7 @@ task("verifyingPaymaster:stake:add", "Stakes the paymaster with the EntryPoint")
 
     const signer = ethers.provider.getSigner();
     const pmc = (await ethers.getContractFactory("VerifyingPaymaster", signer)).attach(pm);
-    const transaction = (await pmc.deposit({ value })) as TransactionResponse;
+    const transaction = (await pmc.addStake(UNSTAKE_DELAY, { value })) as TransactionResponse;
     const receipt = await transaction.wait();
     console.log(`Paymaster deposit added at: ${receipt.transactionHash}`);
   });
