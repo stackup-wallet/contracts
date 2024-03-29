@@ -1,8 +1,6 @@
 import { TransactionResponse } from "@ethersproject/abstract-provider";
 import { task } from "hardhat/config";
 
-import VerifyingPaymaster from "../../../artifacts/contracts/VerifyingPaymaster.sol/VerifyingPaymaster.json";
-
 task("verifyingPaymaster:stake:add", "Stakes the paymaster with the EntryPoint")
   .addPositionalParam("paymaster")
   .addPositionalParam("eth")
@@ -22,7 +20,7 @@ task("verifyingPaymaster:stake:add", "Stakes the paymaster with the EntryPoint")
     }
 
     const signer = ethers.provider.getSigner();
-    const pmc = new ethers.Contract(pm, VerifyingPaymaster.abi, signer);
+    const pmc = (await ethers.getContractFactory("VerifyingPaymaster", signer)).attach(pm);
     const transaction = (await pmc.deposit({ value })) as TransactionResponse;
     const receipt = await transaction.wait();
     console.log(`Paymaster deposit added at: ${receipt.transactionHash}`);
