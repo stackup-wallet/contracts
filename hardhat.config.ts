@@ -107,10 +107,10 @@ const config: HardhatUserConfig = {
     },
     localhost: {
       saveDeployments: false,
-      accounts: {
-        mnemonic,
-      },
     },
+    // Same as localhost, except uses given mnemonic.
+    devnet: { saveDeployments: false, ...getChainConfig("http://localhost:8545") },
+
     mainnet: getChainConfig(process.env.ETHEREUM_RPC),
     sepolia: getChainConfig(process.env.SEPOLIA_RPC),
     polygon: getChainConfig(process.env.POLYGON_RPC),
