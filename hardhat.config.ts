@@ -115,6 +115,7 @@ const config: HardhatUserConfig = {
     sepolia: getChainConfig(process.env.SEPOLIA_RPC),
     polygon: getChainConfig(process.env.POLYGON_RPC),
     polygonMumbai: getChainConfig(process.env.POLYGON_MUMBAI_RPC),
+    polygonAmoy: getChainConfig(process.env.POLYGON_AMOY_RPC),
     avalanche: getChainConfig(process.env.AVALANCHE_RPC),
     avalancheFuji: getChainConfig(process.env.AVALANCHE_FUJI_RPC),
     optimism: getChainConfig(process.env.OPTIMISM_RPC),
