@@ -1,4 +1,3 @@
-![](https://i.imgur.com/lXhFOUv.png)
 
 # Getting Started
 
