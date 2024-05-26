@@ -132,7 +132,27 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
   });
 
   it("should revert on invalid signature", async function () {
-    const userOp = await fillAndSign(
+    // Invalid signature length 64
+    const userOp64 = await fillAndSign(
+      {
+        sender: account.address,
+        paymasterAndData: ethers.utils.hexConcat([
+          this.verifyingPaymaster.address,
+          encodePaymasterData(),
+          "0x" + "00".repeat(64),
+        ]),
+      },
+      this.signers.admin,
+      this.entryPoint,
+    );
+
+    // This reveals that line 96 can be reduced to simply requiring that signature.length == 65
+    await expect(this.entryPoint.callStatic.simulateValidation(userOp64))
+      .to.be.revertedWithCustomError(this.entryPoint, "FailedOp")
+      .withArgs(0, "AA33 reverted: ECDSA: invalid signature length");
+
+    // Invalid signature length 65
+    const userOp65 = await fillAndSign(
       {
         sender: account.address,
         paymasterAndData: ethers.utils.hexConcat([
@@ -145,7 +165,7 @@ export function shouldValidatePaymasterUserOpCorrectly(): void {
       this.entryPoint,
     );
 
-    await expect(this.entryPoint.callStatic.simulateValidation(userOp))
+    await expect(this.entryPoint.callStatic.simulateValidation(userOp65))
       .to.be.revertedWithCustomError(this.entryPoint, "FailedOp")
       .withArgs(0, "AA33 reverted: ECDSA: invalid signature");
   });
@@ -287,6 +307,62 @@ export function shouldHandleOpsCorrectly() {
       this.signers.admin,
       this.entryPoint,
     );
+    const hash = await this.verifyingPaymaster.getHash(
+      partialUserOp,
+      MOCK_VALID_UNTIL,
+      MOCK_VALID_AFTER,
+      token.address,
+      MOCK_FX,
+    );
+
+    const sig = await this.signers.verifier.signMessage(ethers.utils.arrayify(hash));
+    const userOp = await fillAndSign(
+      {
+        ...partialUserOp,
+        paymasterAndData: ethers.utils.hexConcat([
+          this.verifyingPaymaster.address,
+          encodePaymasterData(token.address, MOCK_FX),
+          sig,
+        ]),
+      },
+      this.signers.admin,
+      this.entryPoint,
+    );
+
+    const requiredPrefund = ethers.BigNumber.from(userOp.callGasLimit)
+      .add(ethers.BigNumber.from(userOp.verificationGasLimit).mul(3))
+      .add(userOp.preVerificationGas)
+      .mul(userOp.maxFeePerGas);
+    const initBalance = await token.balanceOf(vault);
+    await this.entryPoint.handleOps([userOp], this.signers.admin.address);
+    const postBalance = await token.balanceOf(vault);
+
+    const ev = await getUserOpEvent(this.entryPoint);
+    expect(ev.args.success).to.be.true;
+    expect(postBalance.sub(initBalance)).to.be.greaterThan(ethers.constants.Zero);
+    expect(postBalance.sub(initBalance)).to.be.lessThanOrEqual(
+      requiredPrefund.mul(MOCK_FX).div(ethers.constants.WeiPerEther),
+    );
+  });
+
+  it("should pay with ERC20 tokens if approved when maxFeePerGas != maxPriorityFeePerGas", async function () {
+    const partialUserOp = await fillAndSign(
+      {
+        sender: account.address,
+        paymasterAndData: ethers.utils.hexConcat([
+          this.verifyingPaymaster.address,
+          encodePaymasterData(token.address, MOCK_FX),
+          "0x" + "00".repeat(65),
+        ]),
+        callData: encodeERC20Approval(account, token, this.verifyingPaymaster.address, ethers.constants.MaxUint256),
+      },
+      this.signers.admin,
+      this.entryPoint,
+    );
+
+    // Modify from default where maxFeePerGas == maxPriorityFeePerGas
+    partialUserOp.maxFeePerGas = BigNumber.from(partialUserOp.maxPriorityFeePerGas).mul(BigNumber.from(2));
+
     const hash = await this.verifyingPaymaster.getHash(
       partialUserOp,
       MOCK_VALID_UNTIL,
